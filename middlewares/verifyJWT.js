@@ -4,10 +4,10 @@ require('dotenv').config()
 
 
 const verifyJWT = async (req,res,next) => {
-    console.log('cheguei aqui')
+    
     try {
         const token = req.headers.authorization.split(" ")[1]
-        console.log(token)
+    
         
         const verifiedJWT = jwt.verify(token, process.env.SECRET)
         

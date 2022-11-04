@@ -6,7 +6,7 @@ const profileController = async (req,res) => {
     try {
         const user = await User.findById(req.userId)
 
-        res.status(200).json({message: `${user.name}`})
+        res.status(200).json({name: user.name, img:user.profile_picture})
     } catch(error){
         res.status(404).json({})
     }

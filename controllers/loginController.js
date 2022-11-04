@@ -2,6 +2,7 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const cookieParser = require('cookie-parser')
 
 
 const loginController = async (req,res) => {
@@ -16,7 +17,7 @@ const loginController = async (req,res) => {
         }
         const checkPassword = await bcrypt.compare(password, correctUser.password)
         if(!checkPassword){
-            return res.status(401).json({msg: "invalid password or user"})
+            return res.status(401).json({"msg": "invalid password or user"})
         }
 
         const accessToken = jwt.sign(
@@ -41,7 +42,8 @@ const loginController = async (req,res) => {
         
         correctUser.refresh_token = refreshToken
         await correctUser.save()
-        res.status(200).json({msg: "logged", accessToken, refreshToken}) 
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 *  60 * 60 * 1000})
+        res.status(200).json({msg: "logged", accessToken}) 
     } catch(error){
         console.log(error)
         res.status(400).json({ msg : "bad request"})

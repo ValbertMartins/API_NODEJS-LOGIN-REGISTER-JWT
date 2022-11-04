@@ -9,7 +9,6 @@ const refreshTokenController = async (req,res) => {
         return res.status(401).json({})
     }
 
-    console.log('chegou aqui')
     try {
         const foundUser = await User.findOne({ refresh_token: refreshToken })
         if(!foundUser){
